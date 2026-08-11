@@ -1,0 +1,60 @@
+Log de decisiones
+
++ Patrón de arquitectura
+
+El proyecto combina dos necesidades de procesamiento:
+- Near real-time para métricas operativas (uso, costos, consumo).
+- Batch diario/mensual para maestros y facturación.
+
+Por eso se adopta un patrón Lambda, separado en:
+- Batch Layer: procesa históricos desde Silver, asegurando cálculos completos y consistentes.
+- Speed Layer: procesa eventos recientes desde AstraDB con baja latencia.
+
+La convergencia Batch + Speed se resuelve por event_id, priorizando los eventos más frescos del streaming cuando existen solapamientos.
+
+
++ Particionado
+
+- Batch: los datos ya llegan particionados desde Silver por ingest_ts, facilitando reingestas y auditoría.
+- Speed: no posee particiones físicas (origen Astra). Se normaliza usage_date para unir correctamente con Batch.
+- Gold: almacenado en Parquet sin particiones explícitas. La partición efectiva está en Cassandra.
+
+
++ Modelo de Cassandra (Serving Layer)
+
+Tabla principal: gold_daily_usage_by_org_service
+
+Partition key:
+- org_id
+Permite acceso directo a todos los registros de una organización sin full scan.
+
+Clustering keys (ordenadas):
+- usage_date
+- service
+Ordena cronológicamente y permite consultas eficientes:
+- Consumo diario total por organización.
+- Consumo detallado por servicio en una fecha.
+
+
++ Reglas mínimas de calidad (Silver)
+
+Las validaciones aplicadas buscan evitar datos corruptos sin detener el pipeline:
+
+1. event_id no nulo
+   Asegura base para deduplicación y consistencia de métricas.
+
+2. unit no nulo si value existe
+   Valida consistencia semántica del evento.
+   
+3. Normalización de tipos y fechas
+   Asegura merges consistentes entre Batch y Speed.
+
+4. Anomalías (Estadístico):
+Detección de anomalías basada en el costo por organización.
+
++ Idempotencia y operación
+
+- El checkpoint de streaming + normalización temporal permite re-ejecutar sin generar duplicados.
+- El Speed Layer trabaja sobre una ventana de 48 horas para reducir estado y evitar relecturas innecesarias.
+- Las escrituras a Cassandra se hacen en batches pequeños para mantener throughput y estabilidad.
+- Se utiliza event_id para evitar duplicados en reintentos de micro-batches.
