@@ -1,25 +1,27 @@
 # ☁️ Cloud Provider Data Platform
 
-End-to-end **Data Engineering and Big Data project** developed with **PySpark and Google Colab** for a simulated cloud provider environment.
+🌐 **[Read in English](README.en.md)**
 
-The project implements a complete data pipeline combining **ETL/ELT, Batch Processing, Structured Streaming, a Medallion Data Lake and a Serving Layer with AstraDB / Apache Cassandra**.
+Proyecto integral de **Ingeniería de Datos y Big Data** desarrollado con **PySpark y Google Colab** para un entorno simulado de proveedor de nube.
 
-## 🎯 Overview
+El proyecto implementa un pipeline de datos completo que combina **ETL/ELT, procesamiento Batch, Structured Streaming, un Data Lake con arquitectura Medallion y una capa de servicio con AstraDB / Apache Cassandra**.
 
-The platform processes data from different areas of a cloud provider, including customers, users, cloud resources, billing, support and usage events.
+## 🎯 Descripción general
 
-The main pipeline follows:
+La plataforma procesa datos de distintas áreas de un proveedor de nube, incluyendo clientes, usuarios, recursos cloud, facturación, soporte y eventos de uso.
+
+El pipeline principal sigue el flujo:
 
 ```text
 Landing → Bronze → Silver → Gold → Serving
 ```
 
-The solution combines historical batch processing with near real-time streaming using a **Lambda Architecture**.
+La solución combina procesamiento batch histórico con streaming en casi tiempo real mediante una **Arquitectura Lambda**.
 
-## 🏗️ Architecture
+## 🏗️ Arquitectura
 
 ```text
-Data Sources
+Fuentes de datos
      │
      ├── Batch (CSV)
      └── Streaming (JSONL)
@@ -45,11 +47,11 @@ Data Sources
         BI / Analytics
 ```
 
-* **Batch Layer:** processes historical data through the Data Lake.
-* **Speed Layer:** processes streaming events using Structured Streaming.
-* **Serving Layer:** provides processed data through AstraDB / Cassandra.
+* **Batch Layer:** procesa datos históricos a través del Data Lake.
+* **Speed Layer:** procesa eventos en streaming usando Structured Streaming.
+* **Serving Layer:** expone los datos procesados mediante AstraDB / Cassandra.
 
-## 🔄 Data Pipeline
+## 🔄 Pipeline de datos
 
 ### Batch
 
@@ -57,39 +59,39 @@ Data Sources
 Landing → Bronze → Silver → Gold → Serving
 ```
 
-Processes historical and master data, applying cleaning, validation, enrichment and analytical transformations.
+Procesa datos históricos y maestros, aplicando limpieza, validación, enriquecimiento y transformaciones analíticas.
 
 ### Streaming
 
 ```text
-Streaming Events → Speed Layer → AstraDB
+Eventos Streaming → Speed Layer → AstraDB
 ```
 
-Processes usage events through micro-batches for near real-time metrics.
+Procesa eventos de uso mediante micro-batches para obtener métricas en casi tiempo real.
 
-## 📊 Business Use Cases
+## 📊 Casos de uso de negocio
 
 **FinOps**
 
-* Cost and consumption analysis
-* Top-N services
-* Revenue metrics
-* Cost anomalies
+* Análisis de costos y consumo
+* Top-N de servicios
+* Métricas de ingresos
+* Anomalías de costos
 
-**Support**
+**Soporte**
 
-* Support tickets
-* Severity analysis
-* SLA monitoring
+* Tickets de soporte
+* Análisis de severidad
+* Monitoreo de SLA
 * CSAT
 
-**Product & GenAI**
+**Producto y GenAI**
 
-* Token consumption
-* Estimated costs
-* Near real-time usage
+* Consumo de tokens
+* Costos estimados
+* Uso en casi tiempo real
 
-## 🛠️ Technologies
+## 🛠️ Tecnologías
 
 * Python
 * PySpark / Apache Spark
@@ -100,31 +102,31 @@ Processes usage events through micro-batches for near real-time metrics.
 * Parquet
 * Google Colab
 
-🚀 Reproducibility
+## 🚀 Reproducibilidad
 
-The project is designed to run in **Google Colab**, using Google Drive as the storage environment for the Data Lake.
+El proyecto está diseñado para ejecutarse en **Google Colab**, usando Google Drive como almacenamiento del Data Lake.
 
-### 1. Clone the repository
+### 1. Clonar el repositorio
 
 ```bash
 git clone https://github.com/nicocarrero/cloud-provider-data-platform.git
 ```
 
-### 2. Open the notebook
+### 2. Abrir el notebook
 
-Open the following notebook in **Google Colab**:
+Abre el siguiente notebook en **Google Colab**:
 
 ```text
 datalake/proyecto.ipynb
 ```
 
-### 4. Configure the environment
+### 3. Configurar el entorno
 
-The notebook requires access to the Data Lake and to an AstraDB connection bundle
+El notebook requiere acceso al Data Lake y a un bundle de conexión de AstraDB
 (`secure-connect-db-cloudprovider.zip`).
 
-⚠️ Not included in this repository for security reasons. Generate/download your own
-from your AstraDB dashboard and place it locally before running the notebook.
+⚠️ No se incluye en este repositorio por motivos de seguridad. Genera/descarga el tuyo
+desde el panel de AstraDB y colócalo localmente antes de ejecutar el notebook.
 
 ```text
 datalake/
@@ -135,22 +137,23 @@ datalake/
 └── quarantine/
 ```
 
-### 5. Execute the notebook
+### 4. Ejecutar el notebook
 
-Run the sections **in order**:
+Ejecuta las secciones **en orden**:
 
-1. **Initial Setup**
-2. **Landing → Bronze Ingestion**
-3. **Bronze → Silver Transformation**
-4. **Silver → Gold Transformation**
-5. **Queries / Visualization**
+1. **Configuración inicial**
+2. **Ingesta Landing → Bronze**
+3. **Transformación Bronze → Silver**
+4. **Transformación Silver → Gold**
+5. **Consultas / Visualización**
 
-## 📁 Project Structure
+## 📁 Estructura del proyecto
 
 ```text
 cloud-provider-data-platform/
 │
 ├── README.md
+├── README.en.md
 │
 ├── datalake/
 │   ├── proyecto.ipynb
@@ -166,26 +169,26 @@ cloud-provider-data-platform/
     └── Reporte proyecto.pdf
 ```
 
-## ⚙️ Data Engineering Concepts
+## ⚙️ Conceptos de Ingeniería de Datos
 
-* Lambda Architecture
-* Medallion Architecture
+* Arquitectura Lambda
+* Arquitectura Medallion
 * ETL / ELT
-* Batch Processing
+* Procesamiento Batch
 * Structured Streaming
-* Data Quality
-* Data Enrichment
-* Data Deduplication
-* Anomaly Detection
-* Analytical Data Marts
+* Calidad de datos
+* Enriquecimiento de datos
+* Deduplicación de datos
+* Detección de anomalías
+* Data Marts analíticos
 * Data Lake
 * Serving Layer
 * NoSQL / Cassandra
 
-## 🎥 Project Presentation
+## 🎥 Presentación del proyecto
 
-[Watch on YouTube](https://youtu.be/ER9ghQQsOKs)
+[Ver en YouTube](https://youtu.be/ER9ghQQsOKs)
 
-## 📌 Academic Project
+## 📌 Proyecto académico
 
-Developed for **Minería de Datos II – ISTEA**.
+Desarrollado para **Minería de Datos II – ISTEA**.
